@@ -12,6 +12,6 @@ auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_key, access_secret)
 api = tweepy.API(auth)
 
-tweets = api.search(q='dip株式会社', count=10)
+tweets = api.user_timeline('@yuyurun', count=10)
 for tweet in tweets:
     print(tweet.text, "/n")
