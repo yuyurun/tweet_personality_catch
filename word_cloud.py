@@ -1,7 +1,10 @@
 # coding:UTF-8
 
+
 import MeCab as mc
 import argparse
+import matplotlib.pyplot as plt
+from wordcloud import WordCloud
 
 def load_data(filename):
   texts = []
@@ -26,7 +29,18 @@ def mecab_word(texts):
       result = result.next
       if result is None:
         break
-  return output
+
+  text = ' '.join(output)
+  return text
+
+def word_cloud(text):
+  fpath = "/Library/Fonts/KodomoRounded.otf"
+  wordcloud = WordCloud(background_color="white",font_path=fpath, width=900, height=500).generate(text)
+
+  plt.figure(figsize=(15,12))
+  plt.imshow(wordcloud)
+  plt.axis("off")
+  plt.show()
 
 
 if __name__ == "__main__":
@@ -38,3 +52,4 @@ if __name__ == "__main__":
   texts = load_data(input_file)
   output = mecab_word(texts)
   print(output)
+  word_cloud(output)
