@@ -34,8 +34,9 @@ def mecab_word(texts):
   return text
 
 def word_cloud(text):
+  stop_words = ['https', 'co']
   fpath = "/Library/Fonts/KodomoRounded.otf"
-  wordcloud = WordCloud(background_color="white",font_path=fpath, width=900, height=500).generate(text)
+  wordcloud = WordCloud(background_color="white",font_path=fpath, width=900, height=500,stopwords=set(stop_words)).generate(text)
 
   plt.figure(figsize=(15,12))
   plt.imshow(wordcloud)
