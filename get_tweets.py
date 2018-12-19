@@ -47,7 +47,7 @@ if __name__ == '__main__':
   output_file = args.output_path
 
 
-  tweet_data = get_tweet(username, 10000)
+  tweet_data = get_tweet(username, 30000)
   tweet_save_text(tweet_data,username,output_file)
   tweet_save_data(tweet_data,username,output_file)
 
