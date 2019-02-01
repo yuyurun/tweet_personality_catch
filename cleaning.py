@@ -50,4 +50,6 @@ if __name__=='__main__':
     input_file = args.input_path
     texts = load_data(input_file)
     newDF = clean_tweet(texts)
-    newDF.to_csv(input_file + 'clean.csv')
+
+    filename = input_file.replace(".txt",".clean.csv")
+    newDF.to_csv(filename)
