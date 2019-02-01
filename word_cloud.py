@@ -5,6 +5,7 @@ import MeCab as mc
 import argparse
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
+import pandas as pd
 
 def load_data(filename):
   texts = []
@@ -12,6 +13,12 @@ def load_data(filename):
     for row in f:
       print(row)
       texts.append(row)
+  return texts
+
+def load_csv(csv_path):
+  texts = []
+  df = pd.read_csv(csv_path)
+  texts = df['text']
   return texts
 
 def mecab_word(texts):
@@ -50,7 +57,8 @@ if __name__ == "__main__":
   args = parser.parse_args()
   input_file = args.input_path
 
-  texts = load_data(input_file)
+  #texts = load_data(input_file)
+  texts = load_csv(input_file)
   output = mecab_word(texts)
   print(output)
   word_cloud(output)
