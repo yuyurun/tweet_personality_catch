@@ -4,6 +4,7 @@
 import os.path
 import sqlite3
 import random
+import argparse
 
 from PrepareChain import PrepareChain
 
@@ -41,6 +42,7 @@ class GenerateText(object):
             print(i)
             text = self._generate_sentence(con)
             print('text', len(text))
+            print(args.first_word,end = "")
             print(text, flush=True)
             generated_lines.append(text)
 
@@ -58,7 +60,8 @@ class GenerateText(object):
         morphemes = []
 
         print('_generate_sentence')
-        first_triplet = self._get_first_triplet(con)
+        #first_triplet = self._get_first_triplet(con)
+        first_triplet = self._get_first_triplet_in(con)
         morphemes.append(first_triplet[1])
         morphemes.append(first_triplet[2])
         print('morphemes')
@@ -99,8 +102,6 @@ class GenerateText(object):
         """
         prefixes = (PrepareChain.BEGIN,)
 
-        # 1単語目の指定
-        prefixes = ("めっちゃ",)
         print('_get_first_triplet')
         chains = self._get_chain_from_DB(con, prefixes)
         print('chains')
@@ -108,6 +109,23 @@ class GenerateText(object):
         print('triplet')
         return (triplet["prefix1"], triplet["prefix2"], triplet["suffix"])
 
+    def _get_first_triplet_in(self, con):
+        """
+        get first triplet randomly
+        @param con DBobject
+        @return first_triplet
+        はじめの単語を指定
+        """
+        #prefixes = (PrepareChain.BEGIN,)
+
+        # 1単語目の指定
+        prefixes = (args.first_word,)
+        print('_get_first_triplet')
+        chains = self._get_chain_from_DB(con, prefixes)
+        print('chains')
+        triplet = self._get_probable_triplet(chains)
+        print('triplet')
+        return (triplet["prefix1"], triplet["prefix2"], triplet["suffix"])
     
     def _get_triplet(self, con, prefix1, prefix2):
         """
@@ -149,6 +167,11 @@ class GenerateText(object):
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-f','--first_word', action = 'store')
+    args = parser.parse_args()
+    first_word = args.first_word
+
     generator = GenerateText()
     print(generator.generate())
 
