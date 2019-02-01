@@ -98,6 +98,9 @@ class GenerateText(object):
         @return first_triplet
         """
         prefixes = (PrepareChain.BEGIN,)
+
+        # 1単語目の指定
+        prefixes = ("めっちゃ",)
         print('_get_first_triplet')
         chains = self._get_chain_from_DB(con, prefixes)
         print('chains')
