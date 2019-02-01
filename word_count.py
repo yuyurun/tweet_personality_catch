@@ -29,6 +29,17 @@ def word_count_bi(text):
   fdist = nltk.FreqDist(bgs) 
   print(fdist.most_common(500))
 
+def word_count_tr(text):
+  nltk.download('punkt')
+  tokens = nltk.word_tokenize(text) 
+
+  #Create your bigrams 
+  bgs = nltk.trigrams(tokens) 
+  
+  #compute frequency distribution for all the bigrams in the text 
+  fdist = nltk.FreqDist(bgs) 
+  print(fdist.most_common(500))
+
 def mecab_word_meisi(texts):
   output = []
   for text in texts:
@@ -86,6 +97,24 @@ def mecab_word_keihuku(texts):
   text = ' '.join(output)
   return text
 
+def mecab_word_all(texts):
+  output = []
+  for text in texts:
+    tagger = mc.Tagger('-Ochasen -d /usr/local/lib/mecab/dic/mecab-ipadic-neologd/')
+    tagger.parse('')
+    #enc_text = text.encode('utf-8')
+    result = tagger.parseToNode(text)
+    while(result):
+      if result.surface != "":  # ヘッダとフッタを除外
+        word_type = result.feature.split(",")[0]
+        output.append(result.surface)
+      result = result.next
+      if result is None:
+        break
+
+  text = ' '.join(output)
+  return text
+
 if __name__ == "__main__":
   parser = argparse.ArgumentParser()
   parser.add_argument('-i','--input_path', action = 'store')
@@ -101,3 +130,7 @@ if __name__ == "__main__":
   word_count(output)
   output = mecab_word_keihuku(texts)
   word_count(output)
+  output = mecab_word_all(texts)
+  word_count_tr(output)
+  output = mecab_word_all(texts)
+  word_count_bi(output)
