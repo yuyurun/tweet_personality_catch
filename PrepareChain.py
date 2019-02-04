@@ -3,7 +3,6 @@
 import re
 import sqlite3
 from collections import defaultdict
-
 import MeCab
 
 class PrepareChain(object):
@@ -12,11 +11,17 @@ class PrepareChain(object):
     """
     BEGIN = "__BEGIN_SENTENCE__"
     END = "__END_SENTENCE__"
+    """
+    username = self.username
+    #username = "yuyurun"
+    #username = "whiteblues1017"
+    #username = "Bashiiiiii0603"
+    #DB_PATH = "/Users/hashizumeyuriko/dip/workspace/tweet_personality_catch/chain.db"
+    DB_PATH = "/Users/hashizumeyuriko/dip/workspace/tweet_personality_catch/db/chain_" + username + ".db"
+    DB_SCHEMA_PATH = "/Users/hashizumeyuriko/dip/workspace/tweet_personality_catch/sql/schema_"+ username +".sql"
+    """
 
-    DB_PATH = "/Users/hashizumeyuriko/dip/workspace/tweet_personality_catch/chain.db"
-    DB_SCHEMA_PATH = "/Users/hashizumeyuriko/dip/workspace/tweet_personality_catch/schema.sql"
-
-    def __init__(self, text):
+    def __init__(self, text, username):
         """
         初期化用
         @params text チェーンを作成するための元の文章
@@ -24,6 +29,25 @@ class PrepareChain(object):
         if isinstance(text, str):
             self.text = text
         self.tagger = MeCab.Tagger("-Owakati -d /usr/local/lib/mecab/dic/mecab-ipadic-neologd")
+
+        self.username = username 
+        #username = "yuyurun"
+        #username = "whiteblues1017"
+        #username = "Bashiiiiii0603"
+        #DB_PATH = "/Users/hashizumeyuriko/dip/workspace/tweet_personality_catch/chain.db"
+        DB_PATH = "/Users/hashizumeyuriko/dip/workspace/tweet_personality_catch/db/chain_" + username + ".db"
+        DB_SCHEMA_PATH = "/Users/hashizumeyuriko/dip/workspace/tweet_personality_catch/sql/schema_"+ username +".sql"
+
+        self.DB_PATH = DB_PATH
+        self.DB_SCHEMA_PATH = DB_SCHEMA_PATH
+
+    def path(self,username):
+        DB_PATH = "/Users/hashizumeyuriko/dip/workspace/tweet_personality_catch/db/chain_" + username + ".db"
+        DB_SCHEMA_PATH = "/Users/hashizumeyuriko/dip/workspace/tweet_personality_catch/sql/schema_"+ username +".sql"
+        self.DB_PATH = DB_PATH
+        self.DB_SCHEMA_PATH = DB_SCHEMA_PATH
+
+        return DB_PATH,DB_SCHEMA_PATH
 
     def make_triplet_freqs(self):
         """
@@ -90,14 +114,15 @@ class PrepareChain(object):
         @param triplet_freqs 3つ組とその出現回数の辞書 key: triplet(tuple) val: freq
         """
         # open DB
-        con = sqlite3.connect(PrepareChain.DB_PATH)
+        con = sqlite3.connect(self.DB_PATH)
         if init:
-            with open(PrepareChain.DB_SCHEMA_PATH, "r") as f:
+            with open(self.DB_SCHEMA_PATH, "r") as f:
                 schema = f.read()
                 con.executescript(schema)
 
         datas = [(triplet[0], triplet[1], triplet[2], freq) for (triplet, freq) in triplet_freqs.items()]
-        p_statement = "INSERT INTO chain_freqs (prefix1, prefix2, suffix, freq) values (?, ?, ?, ?)"
+        #p_statement = "INSERT INTO chain_freqs (prefix1, prefix2, suffix, freq) values (?, ?, ?, ?)"
+        p_statement = "INSERT INTO chain_freqs_" + self.username + " (prefix1, prefix2, suffix, freq) values (?, ?, ?, ?)"
         con.executemany(p_statement, datas)
 
         con.commit()

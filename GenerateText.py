@@ -14,12 +14,16 @@ class GenerateText(object):
     Generate text class
     """
     
-    def __init__(self, n=5):
+
+    def __init__(self, username ,n=5):
         """
         initialized class
         @param n How_many_sentences_generated
         """
         self.n = n
+        self.username = username
+        self.DB_PATH = "/Users/hashizumeyuriko/dip/workspace/tweet_personality_catch/db/chain_" + args.username + ".db"
+        self.DB_SCHEMA_PATH = "/Users/hashizumeyuriko/dip/workspace/tweet_personality_catch/sql/schema_"+ args.username +".sql"
 
     def generate(self):
         """
@@ -28,11 +32,11 @@ class GenerateText(object):
         """
         # There are no DB file raise error
         print('in generte')
-        if not os.path.exists(PrepareChain.DB_PATH):
+        if not os.path.exists(self.DB_PATH):
             raise IOError("DB FILE was not found")
         # open DB
         print('open db')
-        con = sqlite3.connect(PrepareChain.DB_PATH)
+        con = sqlite3.connect(self.DB_PATH)
         con.row_factory = sqlite3.Row
         print('con')
         generated_lines = []
@@ -82,7 +86,8 @@ class GenerateText(object):
         @param prefixes rules_of_prefix_getting_chain tuple or list
         @return chain_list
         """
-        sql = "SELECT prefix1, prefix2, suffix, freq FROM chain_freqs WHERE prefix1 = ?"
+        username = self.username
+        sql = "SELECT prefix1, prefix2, suffix, freq FROM chain_freqs_" + username + " WHERE prefix1 = ?"
         if len(prefixes) == 2:
             sql += " and prefix2 = ?"
 
@@ -169,9 +174,10 @@ class GenerateText(object):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-f','--first_word', action = 'store')
+    parser.add_argument('-u','--username', action = 'store')
     args = parser.parse_args()
     first_word = args.first_word
-
-    generator = GenerateText()
+    username = args.username
+    generator = GenerateText(username=username)
     print(generator.generate())
 
