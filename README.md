@@ -20,3 +20,12 @@ python StoreTweetDB.py -i ../data/tweet/personal/tweet_text_${name}.clean.csv -u
 
 ## 文生成
 python  GenerateText.py -f はじめの単語 
+
+## 名詞だけ取得
+
+
+## 特徴単語の取得
+* ../data/tweet/personal/tfidfの下に名詞だけのファイルおく
+python tfidf.py
+
+
