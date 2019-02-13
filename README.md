@@ -25,7 +25,7 @@ python  GenerateText.py -f はじめの単語
 
 
 ## 特徴単語の取得
-* ../data/tweet/personal/tfidfの下に名詞だけのファイルおく
+* ../data/tweet/personal/tfidfの下に名詞だけのファイルおく　　
 `python tfidf.py`
 
 
