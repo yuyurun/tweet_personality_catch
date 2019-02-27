@@ -11,7 +11,7 @@ def load_data(filename):
   texts = []
   with open(filename,"r") as f:
     for row in f:
-      print(row)
+      #print(row)
       texts.append(row)
   return texts
 
