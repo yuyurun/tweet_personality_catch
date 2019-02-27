@@ -64,6 +64,17 @@ def tweet_save_data(tweets,acountname,filepath):
       f.write(str(tweet.created_at))
       f.write("\n")
 
+def tweet_save_user(tweets,acountname,filepath):
+  username = acountname.replace("@","")
+  user = []
+  with open(filepath + "/tweet_user_"  + username + ".txt","a") as f:
+    for tweet in tweets:
+      sentence = tweet.author
+      f.write(str(sentence.screen_name))
+      f.write(" ")
+      user.append(str(sentence.screen_name))
+  return user
+
 if __name__ == '__main__':
   parser = argparse.ArgumentParser()
   parser.add_argument('-u', '--user_name', action = 'store')
