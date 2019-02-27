@@ -39,15 +39,21 @@ def get_tweet_page_all(acountname, num):
 
   tweets = api.search(q="あ",count=200)
   username = "10"
-  get_tweets.tweet_save_text(tweets,username,output_file)
-  get_tweets.tweet_save_data(tweets,username,output_file)  
+  #get_tweets.tweet_save_text(tweets,username,output_file)
+  #get_tweets.tweet_save_data(tweets,username,output_file)  
+  name =[]
+  name = get_tweets.tweet_save_user(tweets,username,output_file)
+  print(name)
   next_max_id = tweets[-1].id
-  for i in range(2,1200):
+  #for i in range(2,1200):
+  for i in range(2,10):
     tweets = api.search(q="あ",count=200,max_id=next_max_id-1)
     next_max_id = tweets[-1].id
     username = "10"
-    get_tweets.tweet_save_text(tweets,username,output_file)
-    get_tweets.tweet_save_data(tweets,username,output_file)
+    #get_tweets.tweet_save_text(tweets,username,output_file)
+    #get_tweets.tweet_save_data(tweets,username,output_file)
+    name = get_tweets.tweet_save_user(tweets,username,output_file)
+    print(name)
     time.sleep(8)
     
   return tweets
