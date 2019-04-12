@@ -19,7 +19,7 @@ Twitterの分析用のリポジトリ
 `python StoreTweetDB.py -i ../data/tweet/personal/tweet_text_${name}.clean.csv -u ${name}`
 
 ## 文生成
-`python  GenerateText.py -f はじめの単語` 
+`python  GenerateText.py -f はじめの単語 -u ユーザー名` 
 
 ## 名詞だけ取得
 
